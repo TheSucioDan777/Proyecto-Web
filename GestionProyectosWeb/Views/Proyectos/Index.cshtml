@@ -1,0 +1,67 @@
+@model IEnumerable<GestionProyectosWeb.Models.Proyecto>
+
+@{
+    ViewData["Title"] = "Panel de Proyectos";
+}
+
+<div class="flex justify-between items-center mb-8">
+    <div>
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Mis Proyectos</h2>
+        <p class="text-sm text-gray-500 mt-1">Gestiona y da seguimiento a tus equipos.</p>
+    </div>
+    
+    @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+    {
+        <a asp-action="Crear" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-brand hover:bg-brandHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand transition-all">
+            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            Nuevo Proyecto
+        </a>
+    }
+</div>
+
+@if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+{
+    <div class="mb-8 bg-gradient-to-r from-gray-900 to-brand rounded-2xl p-6 shadow-lg text-white flex flex-col md:flex-row items-center justify-between border border-gray-800">
+        <div class="flex items-center mb-4 md:mb-0">
+            <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm border border-white/20">
+                <svg class="w-6 h-6 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold tracking-wide">Código de Organización</h3>
+                <p class="text-indigo-200 text-sm">Comparte este código seguro con tu nuevo equipo para que puedan registrarse.</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center bg-black/30 rounded-xl p-1 border border-white/10 backdrop-blur-md">
+            <code class="px-4 py-2 font-mono text-lg font-bold text-green-400 tracking-widest">
+                @ViewBag.CodigoOrganizacion
+            </code>
+        </div>
+    </div>
+}
+
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @foreach (var proyecto in Model)
+    {
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:border-brand/30 transition-all duration-300 flex flex-col h-full group">
+            
+            <div class="flex-grow">
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-brand transition-colors">@proyecto.Nombre</h3>
+                <p class="text-gray-500 text-sm mb-4 line-clamp-3">@proyecto.Descripcion</p>
+            </div>
+            
+            <div class="pt-4 mt-4 border-t border-gray-50 flex items-center justify-between">
+                <div class="flex flex-col">
+                    <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Creado el</span>
+                    <span class="text-sm font-semibold text-gray-700">@proyecto.Fechacreacion?.ToString("dd MMM yyyy")</span>
+                </div>
+                
+                <a asp-controller="Tareas" asp-action="Index" asp-route-id="@proyecto.Id" class="inline-flex items-center text-sm font-semibold text-brand hover:text-brandHover bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-md transition-colors">
+                    Ver Tareas
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+        </div>
+    }
+</div>

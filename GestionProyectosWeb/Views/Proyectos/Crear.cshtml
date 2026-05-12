@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Crear Proyecto";
+}
+
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-brand p-6 text-white text-center">
+            <h4 class="text-xl font-bold">Crear Nuevo Proyecto</h4>
+            <p class="text-indigo-100 text-sm mt-1">Define el nombre y objetivo de tu iniciativa.</p>
+        </div>
+        
+        <form asp-action="Crear" method="post" class="p-8 space-y-6">
+            <div>
+                <label for="Nombre" class="block text-sm font-semibold text-gray-700 mb-1">Nombre del Proyecto</label>
+                <input type="text" id="Nombre" name="Nombre" required 
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all placeholder-gray-300"
+                    placeholder="Ej. Rediseño de App Móvil">
+            </div>
+
+            <div>
+                <label for="Descripcion" class="block text-sm font-semibold text-gray-700 mb-1">Descripción</label>
+                <textarea id="Descripcion" name="Descripcion" rows="4" required
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all placeholder-gray-300"
+                    placeholder="Describe los objetivos y alcance..."></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-4">
+                <a asp-action="Index" class="text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors">
+                    Cancelar
+                </a>
+                <button type="submit" class="px-6 py-3 bg-brand hover:bg-brandHover text-white font-bold rounded-xl shadow-md transition-all">
+                    Guardar Proyecto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

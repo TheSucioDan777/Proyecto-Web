@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="min-h-[70vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden transform transition-all">
+        
+        <div class="bg-brand p-8 text-center">
+            <h2 class="text-4xl font-black text-white tracking-tight">
+                Task<span class="text-indigo-200">Flow</span>
+            </h2>
+            <p class="text-indigo-100 text-sm mt-2 font-medium">Bienvenido de nuevo, ingresa tus credenciales.</p>
+        </div>
+        
+        <div class="p-8">
+            @if (ViewBag.Error != null)
+            {
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg flex items-center">
+                    <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p class="text-sm font-bold text-red-700">@ViewBag.Error</p>
+                </div>
+            }
+
+            <form asp-action="Login" method="post" class="space-y-6">
+                <div>
+                    <label for="Correo" class="block text-sm font-bold text-gray-700 mb-1">Correo Electrónico</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <input type="email" id="Correo" name="Correo" required 
+                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all bg-gray-50 focus:bg-white"
+                            placeholder="ejemplo@sistema.com">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="Password" class="block text-sm font-bold text-gray-700 mb-1">Contraseña</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <input type="password" id="Password" name="Password" required 
+                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand focus:border-brand outline-none transition-all bg-gray-50 focus:bg-white"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full py-3 px-4 bg-brand hover:bg-brandHover text-white font-bold rounded-xl shadow-lg shadow-brand/30 transition-all transform hover:-translate-y-0.5 flex justify-center items-center">
+                    Entrar al Sistema
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </form>
+
+            @if (TempData["MensajeExito"] != null)
+            {
+                <div class="mt-4 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                    <p class="text-sm font-bold text-green-700">@TempData["MensajeExito"]</p>
+                </div>
+            }
+
+            <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                <p class="text-sm text-gray-600">
+                    ¿Tu equipo ya usa TaskFlow? <br/>
+                    <a asp-action="Registro" class="font-bold text-brand hover:text-brandHover transition-colors mt-1 inline-block">
+                        Regístrate con tu código de organización
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+# Carpetas de compilación
+bin/
+obj/
+
+# Archivos de usuario y sistema operativo
+*.user
+.DS_Store
+.vscode/

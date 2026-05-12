@@ -1,0 +1,83 @@
+@model IEnumerable<GestionProyectosWeb.Models.Tarea>
+
+@{
+    ViewData["Title"] = "Tareas del Proyecto";
+}
+
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div>
+        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Tareas: <span class="text-brand">@ViewBag.NombreProyecto</span></h2>
+        <p class="text-sm text-gray-500 mt-1">Gestiona el progreso y estado de las actividades.</p>
+    </div>
+    
+    <div class="mt-4 sm:mt-0 flex space-x-3">
+        <a asp-controller="Proyectos" asp-action="Index" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm">
+            Volver a Proyectos
+        </a>
+        
+        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        {
+            <a asp-action="Crear" asp-route-proyectoId="@ViewBag.ProyectoId" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 shadow-sm transition-colors">
+                <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                Nueva Tarea
+            </a>
+        }
+    </div>
+</div>
+
+<div class="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden" hx-boost="true">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Título de la Tarea</th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha Límite</th>
+                    <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+                @foreach (var tarea in Model)
+                {
+                    <tr class="hover:bg-gray-50 transition-colors group">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">@tarea.Titulo</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form asp-action="CambiarEstado" method="post" class="m-0">
+                                <input type="hidden" name="id" value="@tarea.Id" />
+                                <input type="hidden" name="proyectoId" value="@tarea.Proyectoid" />
+                                
+                                <select name="estado" class="text-xs rounded-full px-3 py-1 font-bold border-0 cursor-pointer focus:ring-2 focus:ring-brand focus:outline-none transition-colors shadow-sm
+                                        @(tarea.Estado == "Completada" ? "bg-green-100 text-green-800 hover:bg-green-200" : 
+                                          tarea.Estado == "En Progreso" ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200" : "bg-gray-100 text-gray-800 hover:bg-gray-200")" 
+                                        onchange="this.form.submit()">
+                                    
+                                    <option value="Pendiente" selected="@(tarea.Estado == "Pendiente" ? "selected" : null)">Pendiente</option>
+                                    <option value="En Progreso" selected="@(tarea.Estado == "En Progreso" ? "selected" : null)">En Progreso</option>
+                                    <option value="Completada" selected="@(tarea.Estado == "Completada" ? "selected" : null)">Completada</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            @(tarea.Fechavencimiento?.ToString("dd/MM/yyyy") ?? "Sin fecha")
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a asp-controller="Tareas" asp-action="Detalles" asp-route-id="@tarea.Id" class="text-brand hover:text-brandHover bg-indigo-50 opacity-0 group-hover:opacity-100 hover:bg-indigo-100 px-3 py-2 rounded-lg transition-all duration-200">
+                                Ver Detalles
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+    @if (!Model.Any())
+    {
+        <div class="p-8 text-center flex flex-col items-center justify-center">
+            <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            <span class="text-gray-500 font-medium">No hay tareas asignadas aún.</span>
+        </div>
+    }
+</div>
