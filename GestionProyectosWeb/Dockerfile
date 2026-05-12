@@ -1,5 +1,5 @@
 # Usa la imagen oficial de Microsoft para construir el proyecto (.NET 8)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
 # Copia todo tu código a la caja
@@ -9,7 +9,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Crea la imagen final, más ligera, solo para ejecutar la app
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app/out .
 
